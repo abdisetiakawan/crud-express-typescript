@@ -1,4 +1,5 @@
 import express from 'express'
+import '../utils/winston'
 import cors from 'cors'
 import app from '../routes'
 
