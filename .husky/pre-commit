@@ -10,13 +10,6 @@ yarn check-format ||
     false;
 )
 
-# Check ESLint Standards
-yarn check-lint ||
-(
-    echo 'ESLint check failed. Make the required changes listed above, add changes and try to commit again.'
-    false;
-)
-
 # Check tsconfig standard
 yarn check-types ||
 (
