@@ -18,7 +18,7 @@ barangRouter.post('/barang', (req: Request, res: Response) => {
     })
   }
 
-  res.status(200).json({
+  res.status(201).json({
     error: null,
     message: 'Input Data Berhasil',
     data: value
