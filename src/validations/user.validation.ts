@@ -9,11 +9,13 @@ export const inputUserValidation = (
     email: Joi.string().trim().required().email().messages({
       'string.base': 'Email harus berupa string',
       'string.empty': 'Email tidak boleh kosong',
-      'string.email': 'Email harus berupa email'
+      'string.email': 'Email harus berupa email',
+      'any.required': 'Email harus diisi'
     }),
     name: Joi.string().trim().required().messages({
       'string.base': 'Name harus berupa string',
-      'string.empty': 'Name tidak boleh kosong'
+      'string.empty': 'Name tidak boleh kosong',
+      'any.required': 'Name harus diisi'
     }),
     password: Joi.string().min(3).max(15).required().messages({
       'string.base': 'Password harus berupa string',
