@@ -1,4 +1,4 @@
-import BarangType from '../types/barang.types'
+import BarangType from '../types/barang.type'
 import prisma from '../utils/client'
 
 export const getBarang = async (): Promise<any> => {

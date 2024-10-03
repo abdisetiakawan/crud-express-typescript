@@ -1,5 +1,5 @@
 import joi from 'joi'
-import type BarangType from '../types/barang.types'
+import type BarangType from '../types/barang.type'
 
 export const inputBarangValidation = (
   payload: BarangType
