@@ -12,7 +12,7 @@ export const inputUserValidation = (
       'string.email': 'Email harus berupa email',
       'any.required': 'Email harus diisi'
     }),
-    name: Joi.string().trim().required().messages({
+    nama: Joi.string().trim().required().messages({
       'string.base': 'Name harus berupa string',
       'string.empty': 'Name tidak boleh kosong',
       'any.required': 'Name harus diisi'
