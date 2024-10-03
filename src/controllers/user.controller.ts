@@ -11,7 +11,7 @@ export const registerUser = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const { error, value } = inputUserValidation(req.body)
     if (error) {
@@ -30,11 +30,11 @@ export const registerUser = async (
       message: 'Register User Berhasil',
       data: user
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when register user pada file /src/controllers/user.controller.ts: register user - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }
@@ -44,7 +44,7 @@ export const loginCredential = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const { error, value } = loginUserValidation(req.body)
     if (error) {
@@ -69,26 +69,27 @@ export const loginCredential = async (
         data: null
       })
     }
-    const userData = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role
-    }
-    const token = generateToken(userData)
-    const refreshToken = generateRefreshToken(userData)
+    // const userData = {
+    //   id: user.user_id,
+    //   nama: user.nama,
+    //   email: user.email,
+    //   role: user.role
+    // }
+    user.password = 'xxxxx'
+    const token = generateToken(user)
+    const refreshToken = generateRefreshToken(user)
     return res.status(200).json({
       error: null,
       message: 'Login Berhasil',
-      data: userData,
+      data: user,
       token,
       refreshToken
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when login user pada file /src/controllers/user.controller.ts: login user - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }

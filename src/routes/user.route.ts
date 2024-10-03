@@ -1,9 +1,17 @@
-import { Router } from 'express'
+import { Router, type Request, type Response, type NextFunction } from 'express'
 import { loginCredential, registerUser } from '../controllers/user.controller'
-import expressAsyncHandler from 'express-async-handler'
+
 const userRouter = Router()
 
-userRouter.post('/register', expressAsyncHandler(registerUser))
-userRouter.post('/login', expressAsyncHandler(loginCredential))
+userRouter.post(
+  '/register',
+  (req: Request, res: Response, next: NextFunction) => {
+    registerUser(req, res, next)
+  }
+)
+
+userRouter.post('/login', (req: Request, res: Response, next: NextFunction) => {
+  loginCredential(req, res, next)
+})
 
 export default userRouter

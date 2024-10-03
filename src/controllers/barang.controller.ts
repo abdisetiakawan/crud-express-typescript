@@ -12,7 +12,7 @@ export const getAllBarang = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const data = await getBarang()
     return res.status(200).json({
@@ -20,11 +20,11 @@ export const getAllBarang = async (
       message: 'Get All Barang Berhasil',
       data
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when get all barang pada file /src/controllers/barang.controller.ts: get all data - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }
@@ -34,7 +34,7 @@ export const getDataById = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const { id } = req.params
     const data = await getBarangById(Number(id))
@@ -43,11 +43,11 @@ export const getDataById = async (
       message: 'Get Data Berhasil',
       data
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when get data by id pada file /src/controllers/barang.controller.ts: get data by id - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }
@@ -57,7 +57,7 @@ export const inputBarang = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const { error, value } = inputBarangValidation(req.body)
     if (error) {
@@ -73,11 +73,11 @@ export const inputBarang = async (
       message: 'Input Data Berhasil',
       data: data
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when input data pada file /src/controllers/barang.controller.ts: create barang - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }
@@ -87,7 +87,7 @@ export const updateDataBarang = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const { id } = req.params
     const { error, value } = inputBarangValidation(req.body)
@@ -104,11 +104,11 @@ export const updateDataBarang = async (
       message: 'Update Data Berhasil',
       data
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when update data pada file /src/controllers/barang.controller.ts: update data - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }
@@ -118,7 +118,7 @@ export const deleteDataBarang = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<Response | undefined> => {
   try {
     const { id } = req.params
     const data = await deleteBarang(Number(id))
@@ -127,11 +127,11 @@ export const deleteDataBarang = async (
       message: 'Delete Data Berhasil',
       data
     })
-  } catch (error: Error | any) {
+  } catch (error: Error | unknown) {
     next(
       new Error(
         'Error when delete data pada file /src/controllers/barang.controller.ts: delete data - ' +
-          error.message
+          String((error as Error).message)
       )
     )
   }

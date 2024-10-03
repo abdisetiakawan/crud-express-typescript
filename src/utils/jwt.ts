@@ -1,7 +1,8 @@
 import 'dotenv/config'
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import UserType from '../types/user.type'
 
-export const generateToken = (user: any): string => {
+export const generateToken = (user: UserType): string => {
   const secret = process.env.JWT_SECRET
   if (!secret) {
     throw new Error('JWT_SECRET is not defined in environment variables')
@@ -20,7 +21,7 @@ export const generateToken = (user: any): string => {
   )
 }
 
-export const generateRefreshToken = (user: any): string => {
+export const generateRefreshToken = (user: UserType): string => {
   const secret = process.env.JWT_REFRESH
   if (!secret) {
     throw new Error('JWT_REFRESH is not defined in environment variables')
@@ -39,7 +40,9 @@ export const generateRefreshToken = (user: any): string => {
   )
 }
 
-export const verifyRefreshToken = (token: string): any => {
+export const verifyRefreshToken = (
+  token: string
+): string | null | JwtPayload => {
   const secret = process.env.JWT_REFRESH
   if (!secret) {
     throw new Error('JWT_REFRESH is not defined in environment variables')
@@ -51,11 +54,13 @@ export const verifyRefreshToken = (token: string): any => {
   }
 }
 
-export const parseJWT = (token: string): any => {
+export const parseJWT = (token: string): UserType => {
   return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString())
 }
 
-export const verifyAccessToken = (token: string): any => {
+export const verifyAccessToken = (
+  token: string
+): string | null | JwtPayload => {
   const secret = process.env.JWT_SECRET
   if (!secret) {
     throw new Error('JWT_SECRET is not defined in environment variables')

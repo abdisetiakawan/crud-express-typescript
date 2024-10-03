@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { Router, type Request, type Response, type NextFunction } from 'express'
 import {
   deleteDataBarang,
   getAllBarang,
@@ -6,22 +6,58 @@ import {
   inputBarang,
   updateDataBarang
 } from '../controllers/barang.controller'
-import expressAsyncHandler from 'express-async-handler'
 import { authenticate } from '../controllers/error.controller'
+
 const barangRouter = Router()
 
-barangRouter.get('/barang', authenticate, expressAsyncHandler(getAllBarang))
-barangRouter.get('/barang/:id', authenticate, expressAsyncHandler(getDataById))
-barangRouter.post('/barang', authenticate, expressAsyncHandler(inputBarang))
+barangRouter.get(
+  '/barang',
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    getAllBarang(req, res, next)
+  }
+)
+
+barangRouter.get(
+  '/barang/:id',
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    getDataById(req, res, next)
+  }
+)
+
+barangRouter.post(
+  '/barang',
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    inputBarang(req, res, next)
+  }
+)
+
 barangRouter.put(
   '/barang/:id',
-  authenticate,
-  expressAsyncHandler(updateDataBarang)
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    updateDataBarang(req, res, next)
+  }
 )
+
 barangRouter.delete(
   '/barang/:id',
-  authenticate,
-  expressAsyncHandler(deleteDataBarang)
+  (req: Request, res: Response, next: NextFunction) => {
+    authenticate(req, res, next)
+  },
+  (req: Request, res: Response, next: NextFunction) => {
+    deleteDataBarang(req, res, next)
+  }
 )
 
 export default barangRouter
