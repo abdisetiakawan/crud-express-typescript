@@ -38,3 +38,31 @@ export const generateRefreshToken = (user: any): string => {
     }
   )
 }
+
+export const verifyRefreshToken = (token: string): any => {
+  const secret = process.env.JWT_REFRESH
+  if (!secret) {
+    throw new Error('JWT_REFRESH is not defined in environment variables')
+  }
+  try {
+    return jwt.verify(token, secret)
+  } catch (error) {
+    return null
+  }
+}
+
+export const parseJWT = (token: string): any => {
+  return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString())
+}
+
+export const verifyAccessToken = (token: string): any => {
+  const secret = process.env.JWT_SECRET
+  if (!secret) {
+    throw new Error('JWT_SECRET is not defined in environment variables')
+  }
+  try {
+    return jwt.verify(token, secret)
+  } catch (error) {
+    return null
+  }
+}
