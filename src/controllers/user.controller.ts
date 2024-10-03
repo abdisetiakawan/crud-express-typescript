@@ -1,7 +1,11 @@
 import { type NextFunction, type Request, type Response } from 'express'
-import { inputUserValidation } from '../validations/user.validation'
-import { createUser } from '../services/user.service'
-import { hashPassword } from '../utils/bcrypt'
+import {
+  inputUserValidation,
+  loginUserValidation
+} from '../validations/user.validation'
+import { createUser, loginUser } from '../services/user.service'
+import { comparePassword, hashPassword } from '../utils/bcrypt'
+import { generateRefreshToken, generateToken } from '../utils/jwt'
 
 export const registerUser = async (
   req: Request,
@@ -30,6 +34,60 @@ export const registerUser = async (
     next(
       new Error(
         'Error when register user pada file /src/controllers/user.controller.ts: register user - ' +
+          error.message
+      )
+    )
+  }
+}
+
+export const loginCredential = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const { error, value } = loginUserValidation(req.body)
+    if (error) {
+      return res.status(400).json({
+        error: error.details[0].message,
+        message: 'Login User Gagal',
+        data: value
+      })
+    }
+    const user = await loginUser(value)
+    if (!user) {
+      return res.status(400).json({
+        error: 'User not found',
+        message: 'Login Gagal',
+        data: value
+      })
+    }
+    if (!comparePassword(value.password, user.password)) {
+      return res.status(400).json({
+        error: 'Wrong password',
+        message: 'Login Gagal',
+        data: null
+      })
+    }
+    const userData = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role
+    }
+    const token = generateToken(userData)
+    const refreshToken = generateRefreshToken(userData)
+    return res.status(200).json({
+      error: null,
+      message: 'Login Berhasil',
+      data: userData,
+      token,
+      refreshToken
+    })
+  } catch (error: Error | any) {
+    next(
+      new Error(
+        'Error when login user pada file /src/controllers/user.controller.ts: login user - ' +
           error.message
       )
     )
