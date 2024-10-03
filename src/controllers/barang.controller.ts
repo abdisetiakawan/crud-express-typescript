@@ -2,6 +2,7 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { inputBarangValidation } from '../validations/barang.validation'
 import {
   createBarang,
+  deleteBarang,
   getBarang,
   getBarangById,
   updateBarang
@@ -107,6 +108,29 @@ export const updateDataBarang = async (
     next(
       new Error(
         'Error when update data pada file /src/controllers/barang.controller.ts: ' +
+          error.message
+      )
+    )
+  }
+}
+
+export const deleteDataBarang = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const { id } = req.params
+    const data = await deleteBarang(Number(id))
+    return res.status(200).json({
+      error: null,
+      message: 'Delete Data Berhasil',
+      data
+    })
+  } catch (error: Error | any) {
+    next(
+      new Error(
+        'Error when delete data pada file /src/controllers/barang.controller.ts: ' +
           error.message
       )
     )

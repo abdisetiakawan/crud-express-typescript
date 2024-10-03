@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  deleteDataBarang,
   getAllBarang,
   getDataById,
   inputBarang,
@@ -12,5 +13,6 @@ barangRouter.get('/barang', expressAsyncHandler(getAllBarang))
 barangRouter.get('/barang/:id', expressAsyncHandler(getDataById))
 barangRouter.post('/barang', expressAsyncHandler(inputBarang))
 barangRouter.put('/barang/:id', expressAsyncHandler(updateDataBarang))
+barangRouter.delete('/barang/:id', expressAsyncHandler(deleteDataBarang))
 
 export default barangRouter
