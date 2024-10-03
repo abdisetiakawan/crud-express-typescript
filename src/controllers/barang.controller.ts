@@ -23,7 +23,7 @@ export const getAllBarang = async (
   } catch (error: Error | any) {
     next(
       new Error(
-        'Error when get all barang pada file /src/controllers/barang.controller.ts: ' +
+        'Error when get all barang pada file /src/controllers/barang.controller.ts: get all data - ' +
           error.message
       )
     )
@@ -46,7 +46,7 @@ export const getDataById = async (
   } catch (error: Error | any) {
     next(
       new Error(
-        'Error when get data by id pada file /src/controllers/barang.controller.ts: ' +
+        'Error when get data by id pada file /src/controllers/barang.controller.ts: get data by id - ' +
           error.message
       )
     )
@@ -76,7 +76,7 @@ export const inputBarang = async (
   } catch (error: Error | any) {
     next(
       new Error(
-        'Error when input data pada file /src/controllers/barang.controller.ts: ' +
+        'Error when input data pada file /src/controllers/barang.controller.ts: create barang - ' +
           error.message
       )
     )
@@ -107,7 +107,7 @@ export const updateDataBarang = async (
   } catch (error: Error | any) {
     next(
       new Error(
-        'Error when update data pada file /src/controllers/barang.controller.ts: ' +
+        'Error when update data pada file /src/controllers/barang.controller.ts: update data - ' +
           error.message
       )
     )
@@ -130,7 +130,7 @@ export const deleteDataBarang = async (
   } catch (error: Error | any) {
     next(
       new Error(
-        'Error when delete data pada file /src/controllers/barang.controller.ts: ' +
+        'Error when delete data pada file /src/controllers/barang.controller.ts: delete data - ' +
           error.message
       )
     )
