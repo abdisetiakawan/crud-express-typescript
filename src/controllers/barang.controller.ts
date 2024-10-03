@@ -3,7 +3,8 @@ import { inputBarangValidation } from '../validations/barang.validation'
 import {
   createBarang,
   getBarang,
-  getBarangById
+  getBarangById,
+  updateBarang
 } from '../services/barang.service'
 
 export const getAllBarang = async (
@@ -75,6 +76,37 @@ export const inputBarang = async (
     next(
       new Error(
         'Error when input data pada file /src/controllers/barang.controller.ts: ' +
+          error.message
+      )
+    )
+  }
+}
+
+export const updateDataBarang = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const { id } = req.params
+    const { error, value } = inputBarangValidation(req.body)
+    if (error) {
+      return res.status(400).json({
+        error: error.details[0].message,
+        message: 'Update Data Gagal',
+        data: value
+      })
+    }
+    const data = await updateBarang({ ...value, id: Number(id) })
+    return res.status(200).json({
+      error: null,
+      message: 'Update Data Berhasil',
+      data
+    })
+  } catch (error: Error | any) {
+    next(
+      new Error(
+        'Error when update data pada file /src/controllers/barang.controller.ts: ' +
           error.message
       )
     )
