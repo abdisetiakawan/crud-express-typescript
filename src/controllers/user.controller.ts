@@ -5,7 +5,12 @@ import {
 } from '../validations/user.validation'
 import { createUser, loginUser } from '../services/user.service'
 import { comparePassword, hashPassword } from '../utils/bcrypt'
-import { generateRefreshToken, generateToken } from '../utils/jwt'
+import {
+  generateRefreshToken,
+  generateToken,
+  parseJWT,
+  verifyRefreshToken
+} from '../utils/jwt'
 
 export const registerUser = async (
   req: Request,
@@ -89,6 +94,58 @@ export const loginCredential = async (
     next(
       new Error(
         'Error when login user pada file /src/controllers/user.controller.ts: login user - ' +
+          String((error as Error).message)
+      )
+    )
+  }
+}
+
+export const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<Response | undefined> => {
+  try {
+    const authHeader = req.headers.authorization
+    const token = authHeader && authHeader.split(' ')[1]
+    if (!token) {
+      return res.status(401).json({
+        error: 'Unauthorized',
+        message: 'Verifikasi Token Gagal',
+        data: null
+      })
+    }
+    const decoded = verifyRefreshToken(String(token))
+    if (!decoded) {
+      return res.status(401).json({
+        error: 'Token Invalid',
+        message: 'Refresh Token Gagal',
+        data: null
+      })
+    }
+    const data = parseJWT(token)
+    const user = await loginUser(data)
+    if (!user) {
+      return res.status(401).json({
+        error: 'Token Invalid',
+        message: 'Refresh Token Gagal',
+        data: null
+      })
+    }
+    user.password = 'xxxxx'
+    const newToken = generateToken(user)
+    const newRefreshToken = generateRefreshToken(user)
+    return res.status(200).json({
+      error: null,
+      message: 'Refresh Token Berhasil',
+      data: user,
+      token: newToken,
+      refreshToken: newRefreshToken
+    })
+  } catch (error: Error | unknown) {
+    next(
+      new Error(
+        'Error when login user pada file /src/controllers/user.controller.ts: refresh token - ' +
           String((error as Error).message)
       )
     )

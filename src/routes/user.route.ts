@@ -1,5 +1,9 @@
 import { Router, type Request, type Response, type NextFunction } from 'express'
-import { loginCredential, registerUser } from '../controllers/user.controller'
+import {
+  loginCredential,
+  refreshToken,
+  registerUser
+} from '../controllers/user.controller'
 
 const userRouter = Router()
 
@@ -13,5 +17,12 @@ userRouter.post(
 userRouter.post('/login', (req: Request, res: Response, next: NextFunction) => {
   loginCredential(req, res, next)
 })
+
+userRouter.get(
+  '/refresh',
+  (req: Request, res: Response, next: NextFunction) => {
+    refreshToken(req, res, next)
+  }
+)
 
 export default userRouter
