@@ -61,14 +61,14 @@ export const loginCredential = async (
     }
     const user = await loginUser(value)
     if (!user) {
-      return res.status(400).json({
+      return res.status(404).json({
         error: 'User not found',
         message: 'Login Gagal',
         data: value
       })
     }
     if (!comparePassword(value.password, user.password)) {
-      return res.status(400).json({
+      return res.status(401).json({
         error: 'Wrong password',
         message: 'Login Gagal',
         data: null
